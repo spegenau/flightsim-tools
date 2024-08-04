@@ -28,3 +28,5 @@ yew = { version = "0.21.0", features = [ "csr"] }
 yew-router = "0.18.0"
 gloo = "0.11.0"
 gloo-storage = "0.3.0"
+geo = { version = "0.28.0", features = [ "use-serde"] }
+gloo-console = "0.3.0"

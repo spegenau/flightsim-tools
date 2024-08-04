@@ -4,6 +4,7 @@ use crate::{
         frequencies::{Frequencies, Frequency},
         infobox::Alignment,
     },
+    vatsim::vatsim_data_manager::{self, ControllerLine, ControllerType, VatsimDataManager},
     Context,
 };
 use infobox::Infobox;
@@ -17,41 +18,49 @@ pub fn ApproachTaxi() -> Html {
 
     let runway: String = ctx.simbrief.api_params.destrwy.clone();
 
-    let mut approach = Frequency {
+    let vatsim_data_manager = VatsimDataManager {
+        vatsim: ctx.vatsim,
+        transceivers: ctx.transceivers.clone(),
+    };
+
+    let destination = ctx.simbrief.destination.icao_code.as_str();
+    let stations_for_airport = vatsim_data_manager.get_stations_for_airport(destination.clone());
+
+    let approach = Frequency {
         name: "Approach".to_string(),
-        frequency: String::default(),
+        frequency: stations_for_airport
+            .get(&ControllerType::Approach)
+            .unwrap_or(&ControllerLine::default())
+            .frequencies
+            .join(", "),
     };
 
-    let mut tower = Frequency {
+    let tower = Frequency {
         name: "Tower".to_string(),
-        frequency: String::default(),
+        frequency: stations_for_airport
+            .get(&ControllerType::Tower)
+            .unwrap_or(&ControllerLine::default())
+            .frequencies
+            .join(", "),
     };
 
-    let mut ground = Frequency {
+    let ground = Frequency {
         name: "Ground".to_string(),
-        frequency: String::default(),
+        frequency: stations_for_airport
+            .get(&ControllerType::Ground)
+            .unwrap_or(&ControllerLine::default())
+            .frequencies
+            .join(", "),
     };
 
-    let mut apron = Frequency {
+    let apron = Frequency {
         name: "Apron".to_string(),
-        frequency: String::default(),
+        frequency: stations_for_airport
+            .get(&ControllerType::Delivery)
+            .unwrap_or(&ControllerLine::default())
+            .frequencies
+            .join(", "),
     };
-
-    let origin = ctx.simbrief.destination.icao_code.as_str();
-
-    let controllers = ctx.vatsim.get_controllers_by_callsign(origin);
-
-    for (callsign, ctr) in controllers {
-        if callsign.ends_with("GND") {
-            ground.frequency.push_str(ctr.frequency.as_str());
-        } else if callsign.ends_with("TWR") {
-            tower.frequency.push_str(ctr.frequency.as_str());
-        } else if callsign.ends_with("APP") {
-            approach.frequency.push_str(ctr.frequency.as_str());
-        } else if callsign.ends_with("DEL") {
-            apron.frequency.push_str(ctr.frequency.as_str());
-        }
-    }
 
     let frequencies: Vec<Frequency> = vec![approach, tower, ground, apron];
 

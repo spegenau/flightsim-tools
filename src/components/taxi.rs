@@ -6,6 +6,7 @@ use crate::{
         frequencies::{Frequencies, Frequency},
         infobox::Alignment,
     },
+    vatsim::vatsim_data_manager::{self, ControllerLine, ControllerType, VatsimDataManager},
     Context,
 };
 
@@ -16,37 +17,42 @@ pub fn Taxi() -> Html {
     let ctx = use_context::<Context>().expect("no ctx found");
 
     let runway: String = ctx.simbrief.api_params.origrwy.clone();
-
-    let mut ground = Frequency {
-        name: "Ground".to_string(),
-        frequency: String::default(),
-    };
-
-    let mut tower = Frequency {
-        name: "Tower".to_string(),
-        frequency: String::default(),
-    };
-
-    let mut departure = Frequency {
-        name: "Departure".to_string(),
-        frequency: String::default(),
-    };
-
     let origin = ctx.simbrief.origin.icao_code.as_str();
 
-    let controllers = ctx.vatsim.get_controllers_by_callsign(origin);
+    let vatsim_data_manager = VatsimDataManager {
+        vatsim: ctx.vatsim,
+        transceivers: ctx.transceivers.clone(),
+    };
+    let stations_for_airport = vatsim_data_manager.get_stations_for_airport(origin);
 
-    for (callsign, ctr) in controllers {
-        if callsign.ends_with("GND") {
-            ground.frequency.push_str(ctr.frequency.as_str());
-        } else if callsign.ends_with("TWR") {
-            tower.frequency.push_str(ctr.frequency.as_str());
-        } else if callsign.ends_with("APP") {
-            departure.frequency.push_str(ctr.frequency.as_str());
-        }
-    }
+    let approach = Frequency {
+        name: "Approach".to_string(),
+        frequency: stations_for_airport
+            .get(&ControllerType::Approach)
+            .unwrap_or(&ControllerLine::default())
+            .frequencies
+            .join(", "),
+    };
 
-    let frequencies: Vec<Frequency> = vec![ground, tower, departure];
+    let tower = Frequency {
+        name: "Tower".to_string(),
+        frequency: stations_for_airport
+            .get(&ControllerType::Tower)
+            .unwrap_or(&ControllerLine::default())
+            .frequencies
+            .join(", "),
+    };
+
+    let ground = Frequency {
+        name: "Ground".to_string(),
+        frequency: stations_for_airport
+            .get(&ControllerType::Ground)
+            .unwrap_or(&ControllerLine::default())
+            .frequencies
+            .join(", "),
+    };
+
+    let frequencies: Vec<Frequency> = vec![tower, ground, approach];
 
     let size_left = "col-3".to_string();
     let size_right = "col-9".to_string();

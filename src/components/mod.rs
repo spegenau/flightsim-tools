@@ -14,3 +14,4 @@ pub mod section;
 pub mod simbrief_loader;
 pub mod taxi;
 pub mod vatsim_loader;
+pub mod vatsim_transceiver_loader;

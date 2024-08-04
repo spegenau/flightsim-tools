@@ -1,6 +1,9 @@
 use std::cmp::max;
 
-use yew::{classes, function_component, html, Html, Properties};
+use gloo_console::log;
+use yew::{classes, function_component, html, use_context, Html, Properties};
+
+use crate::{vatsim::vatsim_data_manager::VatsimDataManager, Context};
 
 #[derive(PartialEq, Default, Clone)]
 pub struct Frequency {
@@ -16,6 +19,8 @@ pub struct FrequenciesProps {
     pub total_lines: i32,
     #[prop_or_default]
     pub show_unicom: bool,
+    #[prop_or_default]
+    pub show_center_stations: bool,
 
     #[prop_or("50%".to_string())]
     pub name_width: String,
@@ -27,6 +32,14 @@ pub struct FrequenciesProps {
 
 #[function_component]
 pub fn Frequencies(props: &FrequenciesProps) -> Html {
+    let ctx = use_context::<Context>().expect("no ctx found");
+    if props.show_center_stations {
+        let vatsim_data_manager = VatsimDataManager {
+            vatsim: ctx.vatsim,
+            transceivers: ctx.transceivers.clone(),
+        };
+        let center_stations = vatsim_data_manager.get_center_stations(ctx.simbrief.navlog.fix);
+    }
     let max = max(props.total_lines, props.frequencies.len() as i32);
 
     let mut frequencies = (0..max)
