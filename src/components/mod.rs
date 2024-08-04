@@ -3,6 +3,7 @@ pub mod cheatsheet;
 pub mod clearance;
 pub mod controllers;
 pub mod cruise;
+pub mod flexibox;
 pub mod frequencies;
 pub mod general_information;
 pub mod header;

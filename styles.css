@@ -1,12 +1,21 @@
 @media print {
     body {
-      visibility: none;
+      visibility: hidden;
+    }
+    header {
+      visibility: hidden;
     }
     #section-to-print {
       visibility: visible;
       position: absolute;
       left: 0;
       top: 0;
+    }
+
+    .sectionLabelContainer {
+        background-color: #1a4567 !important;
+        background: red;;
+        print-color-adjust: exact; 
     }
   }
 
@@ -17,12 +26,10 @@
 }
 
 .paper {
-    /*
-    border: 1pt solid red;
-    */
+    border: 1pt dashed black;
     width: 21cm;
     height: 29.7cm;
-    padding: 0.75cm 0.75cm 0.75cm 0.75cm;
+    padding: 0.75cm 0.75cm 0.75cm 1cm;
     font-size: 10pt;
 }
 
@@ -67,8 +74,13 @@
 }
 
 .sectionLabelContainer {
-    background: lightgrey;
+    background: lightgrey !important;
+    box-shadow: inset 0 0 0 9999px lightgrey;
     width: 40px;
     position: relative;
     display: inline-block;
+}
+
+.bordered {
+    border: 1px solid lightgrey;
 }

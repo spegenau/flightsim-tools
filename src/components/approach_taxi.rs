@@ -1,13 +1,13 @@
-use infobox::Infobox;
-use yew::{classes, function_component, html, use_context, Html};
-
 use crate::{
     components::{
+        flexibox::{Flexibox, FlexiboxEntry},
         frequencies::{Frequencies, Frequency},
         infobox::Alignment,
     },
     Context,
 };
+use infobox::Infobox;
+use yew::{classes, function_component, html, use_context, Html};
 
 use super::infobox;
 
@@ -59,6 +59,13 @@ pub fn ApproachTaxi() -> Html {
     let size_right = "col-9".to_string();
     let min_height = "1.5cm".to_string();
 
+    let entries = vec![
+        FlexiboxEntry::label_only("TL"),
+        FlexiboxEntry::label_only("Wind"),
+        FlexiboxEntry::label_only("Temp"),
+        FlexiboxEntry::label_only("QNH"),
+    ];
+
     html! {
         <div class={classes!("container")}>
             <div class={classes!("row")}>
@@ -75,6 +82,7 @@ pub fn ApproachTaxi() -> Html {
                 <div class={classes!("col-6", "ml-1")}>
                     <Infobox label={"Awaited"} size_left={size_left.clone()} size_right={size_right.clone()} min_height={min_height.clone()} dense={true}  />
                     <Infobox class={classes!("mt-2")} label={"Confirmed"} size_left={size_left.clone()} size_right={size_right.clone()} min_height={min_height.clone()} dense={true} />
+                    <Flexibox {entries} />
                 </div>
             </div>
         </div>

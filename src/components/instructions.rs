@@ -19,13 +19,13 @@ pub fn Instructions(props: &InstructionsProps) -> Html {
         <table class={classes!("table", "table-striped", "table-bordered", "table-sm")}>
             <thead>
                 <tr>
-                    <th class={classes!("bordered")} style="width: 7%;">{"L/R"}</th>
-                    <th class={classes!("bordered", "boldBorderRight")} style="width: 15%;">{"HDG"}</th>
-                    <th class={classes!("bordered")} style="width: 7%;">{"><"}</th>
-                    <th class={classes!("bordered", "boldBorderRight")} style="width: 15%;">{"SPD"}</th>
-                    <th class={classes!("bordered")} style="width: 7%;">{"∓"}</th>
-                    <th class={classes!("bordered")} style="width: 15%;">{"FL"}</th>
-                    <th class={classes!("bordered")} style="width: 15%;">{"Rate"}</th>
+                    <th style="width: 7%;">{"L/R"}</th>
+                    <th class={classes!("boldBorderRight")} style="width: 15%;">{"HDG"}</th>
+                    <th style="width: 7%;">{"><"}</th>
+                    <th class={classes!("boldBorderRight")} style="width: 15%;">{"SPD"}</th>
+                    <th style="width: 7%;">{"∓"}</th>
+                    <th style="width: 15%;">{"FL"}</th>
+                    <th style="width: 15%;">{"Rate"}</th>
                 </tr>
             </thead>
             <tbody>
@@ -33,13 +33,13 @@ pub fn Instructions(props: &InstructionsProps) -> Html {
                     lines.into_iter().map(|line| {
                         html!{
                             <tr key={line} style={line_height.clone()}>
-                                <td class={classes!("bordered")}></td>
-                                <td class={classes!("bordered", "boldBorderRight")}></td>
-                                <td class={classes!("bordered")}></td>
-                                <td class={classes!("bordered", "boldBorderRight")}></td>
-                                <td class={classes!("bordered")}></td>
-                                <td class={classes!("bordered")}></td>
-                                <td class={classes!("bordered")}></td>
+                                <td></td>
+                                <td class={classes!("boldBorderRight")}></td>
+                                <td></td>
+                                <td class={classes!("boldBorderRight")}></td>
+                                <td></td>
+                                <td></td>
+                                <td></td>
                             </tr>
                         }
                     }).collect::<Html>()
