@@ -1,0 +1,30 @@
+[package]
+name = "atc_cheatsheet"
+version = "0.1.0"
+edition = "2021"
+
+# See more keys and their definitions at https://doc.rust-lang.org/cargo/reference/manifest.html
+#yew = { git = "https://github.com/yewstack/yew/", features = ["csr"] }
+
+[profile.release]
+# less code to include into binary
+panic = 'abort'
+# optimization over all codebase ( better optimization, slower build )
+codegen-units = 1
+# optimization for size ( more aggressive )
+opt-level = 'z'
+# optimization for size
+# opt-level = 's'
+# link time optimization using using whole-program analysis
+lto = true
+
+[dependencies]
+wasm-bindgen = "0.2"
+web-sys = "0.3.69"
+gloo-net = "0.6.0"
+serde = { version = "1.0.204", features = [ "derive"] }
+wasm-bindgen-futures = "0.4.42"
+yew = { version = "0.21.0", features = [ "csr"] }
+yew-router = "0.18.0"
+gloo = "0.11.0"
+gloo-storage = "0.3.0"

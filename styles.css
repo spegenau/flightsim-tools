@@ -1,0 +1,74 @@
+@media print {
+    body {
+      visibility: none;
+    }
+    #section-to-print {
+      visibility: visible;
+      position: absolute;
+      left: 0;
+      top: 0;
+    }
+  }
+
+.field {
+    border: 1pt solid lightgrey;
+    display: inline-table;
+    width: 3cm;
+}
+
+.paper {
+    /*
+    border: 1pt solid red;
+    */
+    width: 21cm;
+    height: 29.7cm;
+    padding: 0.75cm 0.75cm 0.75cm 0.75cm;
+    font-size: 10pt;
+}
+
+.right {
+    float: right;
+}
+
+.proposition {
+    position: absolute;
+    bottom: 0;
+    right: 0;
+    font-weight: normal;
+}
+
+.center {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.box {
+    outline: 1px solid lightgrey;
+    position: relative;
+}
+
+.boxContent {
+    font-weight: bold;
+}
+
+.boldBorderRight {
+    border-right: 3px solid black;
+}
+
+.sectionLabel {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    -moz-transform: translateX(-50%) translateY(-50%) rotate(-90deg);
+    -webkit-transform: translateX(-50%) translateY(-50%) rotate(-90deg);
+    transform: translateX(-50%) translateY(-50%) rotate(-90deg);
+
+}
+
+.sectionLabelContainer {
+    background: lightgrey;
+    width: 40px;
+    position: relative;
+    display: inline-block;
+}
