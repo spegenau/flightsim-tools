@@ -6,26 +6,28 @@ use crate::{
         frequencies::{Frequencies, Frequency},
         infobox::Alignment,
     },
-    simbrief::general::General,
-    Context,
+    simbrief::{general::General, simbrief_response::SimbriefResponse},
+    vatsim::vatsim_response::VatsimResponse,
 };
 
 use super::infobox;
 
 #[function_component]
 pub fn Clearance() -> Html {
-    let ctx = use_context::<Context>().expect("no ctx found");
+    let simbrief = use_context::<SimbriefResponse>().expect("no ctx found");
+    let vatsim = use_context::<VatsimResponse>().expect("no ctx found");
 
-    let general: General = ctx.simbrief.general.clone();
+    let general: General = simbrief.general.clone();
 
     let mut delivery = Frequency {
-        name: "Delivery".to_string(),
+        id: 0,
+        callsign: "Delivery".to_string(),
         frequency: String::default(),
     };
 
-    let origin = ctx.simbrief.origin.icao_code.as_str();
+    let origin = simbrief.origin.icao_code.as_str();
 
-    let controllers = ctx.vatsim.get_controllers_by_callsign(origin);
+    let controllers = vatsim.get_controllers_by_callsign(origin);
 
     for (callsign, ctr) in controllers {
         if callsign.ends_with("DEL") {

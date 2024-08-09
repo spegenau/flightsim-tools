@@ -1,57 +1,54 @@
 use std::collections::HashMap;
 
-use geo::{coord, Contains, Coord};
+use geo::{coord, Coord};
 use gloo_console::log;
-use web_sys::console::log;
 
-use crate::{
-    components::{controllers, frequencies},
-    simbrief::fix_info_point::FixInfoPoint,
-};
+use crate::simbrief::fix_info_point::FixInfoPoint;
 
-use super::{
-    transceiver::{self, Transceiver},
-    vatsim_response::VatsimResponse,
-};
+use super::transceiver::Transceiver;
 #[derive(PartialEq, Hash, Eq)]
 pub enum ControllerType {
     Approach,
-    Atis,
+    // Atis,
     Control,
     Delivery,
     Ground,
-    Observer,
-    Supervisor,
+    // Observer,
+    // Supervisor,
     Tower,
     None,
-}
-
-impl Default for ControllerType {
-    fn default() -> Self {
-        ControllerType::None
-    }
 }
 
 impl ControllerType {
     fn as_str(&self) -> &'static str {
         match self {
             ControllerType::Approach => "APP",
-            ControllerType::Atis => "ATIS",
+            // ControllerType::Atis => "ATIS",
             ControllerType::Control => "CTR",
             ControllerType::Delivery => "DEL",
             ControllerType::Ground => "GND",
-            ControllerType::Observer => "OBS",
-            ControllerType::Supervisor => "SUP",
+            // ControllerType::Observer => "OBS",
+            // ControllerType::Supervisor => "SUP",
             ControllerType::Tower => "TWR",
             ControllerType::None => "INVALID",
         }
     }
 }
-#[derive(PartialEq, Hash, Default)]
+#[derive(PartialEq, Hash)]
 pub struct ControllerLine {
     pub callsign: String,
     pub controller_type: ControllerType,
     pub frequencies: Vec<String>,
+}
+
+impl Default for ControllerLine {
+    fn default() -> Self {
+        Self {
+            callsign: Default::default(),
+            controller_type: ControllerType::None,
+            frequencies: Default::default(),
+        }
+    }
 }
 
 impl ControllerLine {
@@ -65,7 +62,6 @@ impl ControllerLine {
 }
 
 pub struct VatsimDataManager {
-    pub vatsim: VatsimResponse,
     pub transceivers: Vec<Transceiver>,
 }
 

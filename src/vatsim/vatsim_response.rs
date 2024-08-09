@@ -30,4 +30,11 @@ impl VatsimResponse {
             .map(|c| (c.callsign.clone(), c.clone()))
             .collect()
     }
+
+    pub fn get_all_controllers_as_map(&self) -> HashMap<String, Controller> {
+        self.get_all_controllers()
+            .into_iter()
+            .map(|c| (c.callsign.clone(), c.clone()))
+            .collect()
+    }
 }

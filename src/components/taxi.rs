@@ -6,27 +6,29 @@ use crate::{
         frequencies::{Frequencies, Frequency},
         infobox::Alignment,
     },
-    vatsim::vatsim_data_manager::{self, ControllerLine, ControllerType, VatsimDataManager},
-    Context,
+    simbrief::simbrief_response::SimbriefResponse,
+    vatsim::{
+        transceiver::Transceiver,
+        vatsim_data_manager::{ControllerLine, ControllerType, VatsimDataManager},
+    },
 };
 
 use super::infobox;
 
 #[function_component]
 pub fn Taxi() -> Html {
-    let ctx = use_context::<Context>().expect("no ctx found");
+    let simbrief = use_context::<SimbriefResponse>().expect("no ctx found");
+    let transceivers = use_context::<Vec<Transceiver>>().expect("no ctx found");
 
-    let runway: String = ctx.simbrief.api_params.origrwy.clone();
-    let origin = ctx.simbrief.origin.icao_code.as_str();
+    let runway: String = simbrief.api_params.origrwy.clone();
+    let origin = simbrief.origin.icao_code.as_str();
 
-    let vatsim_data_manager = VatsimDataManager {
-        vatsim: ctx.vatsim,
-        transceivers: ctx.transceivers.clone(),
-    };
+    let vatsim_data_manager = VatsimDataManager { transceivers };
     let stations_for_airport = vatsim_data_manager.get_stations_for_airport(origin);
 
     let approach = Frequency {
-        name: "Approach".to_string(),
+        id: 0,
+        callsign: "Approach".to_string(),
         frequency: stations_for_airport
             .get(&ControllerType::Approach)
             .unwrap_or(&ControllerLine::default())
@@ -35,7 +37,8 @@ pub fn Taxi() -> Html {
     };
 
     let tower = Frequency {
-        name: "Tower".to_string(),
+        id: 1,
+        callsign: "Tower".to_string(),
         frequency: stations_for_airport
             .get(&ControllerType::Tower)
             .unwrap_or(&ControllerLine::default())
@@ -44,7 +47,8 @@ pub fn Taxi() -> Html {
     };
 
     let ground = Frequency {
-        name: "Ground".to_string(),
+        id: 2,
+        callsign: "Ground".to_string(),
         frequency: stations_for_airport
             .get(&ControllerType::Ground)
             .unwrap_or(&ControllerLine::default())

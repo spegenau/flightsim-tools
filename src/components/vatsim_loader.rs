@@ -12,6 +12,7 @@ pub const UPDATE_EVERY_X_SECONDS: u32 = 60;
 #[derive(Properties, PartialEq)]
 pub struct VatsimLoaderProps {
     pub on_vatsim_update: Callback<VatsimResponse>,
+    pub on_error: Callback<Vec<String>>,
 }
 
 enum SecondsStateAction {
@@ -46,6 +47,7 @@ pub fn VatsimLoader(props: &VatsimLoaderProps) -> Html {
         let seconds_state_handle = seconds_state_handle.clone();
 
         let event = props.on_vatsim_update.clone();
+        let error_handler = props.on_error.clone();
         move || {
             // i intervals get out of scope they get dropped and destroyed
             let interval = Interval::new(1000, move || {
@@ -53,16 +55,29 @@ pub fn VatsimLoader(props: &VatsimLoaderProps) -> Html {
 
                 if seconds % UPDATE_EVERY_X_SECONDS as usize == 0 {
                     let value = event.clone();
+                    let error_handler = error_handler.clone();
                     wasm_bindgen_futures::spawn_local(async move {
-                        let vatsim: VatsimResponse = Request::get(VATSIM_URL)
-                            .send()
-                            .await
-                            .unwrap()
-                            .json()
-                            .await
-                            .unwrap();
-
-                        value.emit(vatsim);
+                        let error_handler = error_handler.clone();
+                        match Request::get(VATSIM_URL).send().await {
+                            Ok(response) => {
+                                let json_result = response.json::<VatsimResponse>().await;
+                                match json_result {
+                                    Ok(vatsim) => {
+                                        value.emit(vatsim);
+                                    }
+                                    Err(e) => {
+                                        error_handler.emit(vec![format!(
+                                            "Error parsing VATSIM data: {}",
+                                            e
+                                        )]);
+                                    }
+                                }
+                            }
+                            Err(e) => {
+                                error_handler
+                                    .emit(vec![format!("Error fetching VATSIM data: {}", e)]);
+                            }
+                        }
                     });
                 }
 

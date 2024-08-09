@@ -10,6 +10,7 @@ use crate::simbrief::simbrief_response::{get_simbrief_url, SimbriefResponse};
 #[derive(Properties, PartialEq)]
 pub struct SimbriefLoaderProps {
     pub on_simbrief_update: Callback<SimbriefResponse>,
+    pub on_error: Callback<Vec<String>>,
 }
 
 #[function_component]
@@ -55,6 +56,7 @@ pub fn SimbriefLoader(props: &SimbriefLoaderProps) -> Html {
     };
 
     let event = props.on_simbrief_update.clone();
+    let error_handler = props.on_error.clone();
     let onclick = Callback::from(move |_| {
         // Set loading flag
         let is_loading = is_loading.clone();
@@ -66,18 +68,28 @@ pub fn SimbriefLoader(props: &SimbriefLoaderProps) -> Html {
         let url = get_simbrief_url(&simbrief_id);
 
         let event = event.clone();
+        let error_handler = error_handler.clone();
         wasm_bindgen_futures::spawn_local(async move {
-            let simbrief: SimbriefResponse = Request::get(&url)
-                .send()
-                .await
-                .unwrap()
-                .json()
-                .await
-                .unwrap();
-
-            event.emit(simbrief);
-            is_loading.set(false);
-            has_loaded.set(true);
+            match Request::get(&url).send().await {
+                Ok(response) => {
+                    let simbrief = response.json::<SimbriefResponse>().await;
+                    match simbrief {
+                        Ok(simbrief) => {
+                            event.emit(simbrief);
+                            is_loading.set(false);
+                            has_loaded.set(true);
+                        }
+                        Err(e) => {
+                            error_handler.emit(vec![format!("Error loading simbrief: {}", e)]);
+                            is_loading.set(false);
+                        }
+                    }
+                }
+                Err(e) => {
+                    error_handler.emit(vec![format!("Error loading simbrief: {}", e)]);
+                    is_loading.set(false);
+                }
+            }
         });
     });
 

@@ -1,11 +1,11 @@
 use yew::{classes, function_component, html, use_context, Html};
 
-use crate::{vatsim::controller::Controller, Context};
+use crate::vatsim::{controller::Controller, vatsim_response::VatsimResponse};
 
 #[function_component]
 pub fn Controllers() -> Html {
-    let ctx = use_context::<Context>().expect("no ctx found");
-    let mut controllers: Vec<Controller> = ctx.vatsim.get_all_controllers();
+    let vatsim = use_context::<VatsimResponse>().expect("no ctx found");
+    let mut controllers: Vec<Controller> = vatsim.get_all_controllers();
 
     controllers.sort_by_key(|c| c.callsign.clone());
 

@@ -1,20 +1,17 @@
 use infobox::Infobox;
 use yew::{classes, function_component, html, use_context, Html};
 
-use crate::{
-    simbrief::{airport::Airport, general::General},
-    Context,
-};
+use crate::simbrief::{airport::Airport, general::General, simbrief_response::SimbriefResponse};
 
 use super::infobox;
 
 #[function_component]
 pub fn GeneralInformation() -> Html {
-    let ctx = use_context::<Context>().expect("no ctx found");
+    let simbrief = use_context::<SimbriefResponse>().expect("no ctx found");
 
-    let general: General = ctx.simbrief.general.clone();
-    let origin: Airport = ctx.simbrief.origin.clone();
-    let destination: Airport = ctx.simbrief.destination.clone();
+    let general: General = simbrief.general.clone();
+    let origin: Airport = simbrief.origin.clone();
+    let destination: Airport = simbrief.destination.clone();
 
     let size_left = "col-4".to_string();
     let size_right = "col-8".to_string();

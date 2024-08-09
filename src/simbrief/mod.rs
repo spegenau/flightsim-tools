@@ -5,3 +5,4 @@ pub mod fix_info_point;
 pub mod general;
 pub mod navlog;
 pub mod simbrief_response;
+pub mod string_or_map;

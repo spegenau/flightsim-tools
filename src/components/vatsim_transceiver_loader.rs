@@ -12,6 +12,7 @@ pub const UPDATE_EVERY_X_SECONDS: u32 = 60;
 #[derive(Properties, PartialEq)]
 pub struct VatsimTransceiverLoaderProps {
     pub on_vatsim_transceiver_update: Callback<Vec<Transceiver>>,
+    pub on_error: Callback<Vec<String>>,
 }
 
 enum SecondsStateAction {

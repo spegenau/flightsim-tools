@@ -1,15 +1,15 @@
 use yew::{classes, function_component, html, use_context, Html};
 
-use crate::{simbrief::fix_info_point::FixInfoPoint, Context};
+use crate::simbrief::{fix_info_point::FixInfoPoint, simbrief_response::SimbriefResponse};
 
 #[function_component]
 pub fn Route() -> Html {
-    let ctx = use_context::<Context>().expect("no ctx found");
+    let simbrief = use_context::<SimbriefResponse>().expect("no ctx found");
 
-    let navlog = ctx.simbrief.navlog.fix.clone();
+    let navlog = simbrief.navlog.fix.clone();
 
-    let sid = ctx.simbrief.general.get_sid();
-    let star = ctx.simbrief.general.get_star();
+    let sid = simbrief.general.get_sid();
+    let star = simbrief.general.get_star();
 
     let mut points_sid: Vec<FixInfoPoint> = Vec::new();
     let mut points_crz: Vec<FixInfoPoint> = Vec::new();

@@ -1,13 +1,12 @@
 use std::cmp::max;
 
 use gloo_console::log;
-use yew::{classes, function_component, html, use_context, Html, Properties};
-
-use crate::{vatsim::vatsim_data_manager::VatsimDataManager, Context};
+use yew::{classes, function_component, html, Html, Properties};
 
 #[derive(PartialEq, Default, Clone)]
 pub struct Frequency {
-    pub name: String,
+    pub id: u8,
+    pub callsign: String,
     pub frequency: String,
 }
 
@@ -16,11 +15,9 @@ pub struct FrequenciesProps {
     #[prop_or(Vec::new())]
     pub frequencies: Vec<Frequency>,
     #[prop_or(1)]
-    pub total_lines: i32,
+    pub total_lines: u8,
     #[prop_or_default]
     pub show_unicom: bool,
-    #[prop_or_default]
-    pub show_center_stations: bool,
 
     #[prop_or("50%".to_string())]
     pub name_width: String,
@@ -32,28 +29,28 @@ pub struct FrequenciesProps {
 
 #[function_component]
 pub fn Frequencies(props: &FrequenciesProps) -> Html {
-    let ctx = use_context::<Context>().expect("no ctx found");
-    if props.show_center_stations {
-        let vatsim_data_manager = VatsimDataManager {
-            vatsim: ctx.vatsim,
-            transceivers: ctx.transceivers.clone(),
-        };
-        let center_stations = vatsim_data_manager.get_center_stations(ctx.simbrief.navlog.fix);
-    }
-    let max = max(props.total_lines, props.frequencies.len() as i32);
+    let mut frequencies = props.frequencies.clone();
+    let max = max(props.total_lines, props.frequencies.len() as u8);
 
-    let mut frequencies = (0..max)
-        .map(|index| match props.frequencies.get(index as usize) {
-            Some(freq) => (*freq).clone(),
-            None => Frequency::default(),
-        })
-        .collect::<Vec<Frequency>>();
+    while frequencies.len() < max as usize {
+        frequencies.push(Frequency::default())
+    }
 
     if props.show_unicom {
         frequencies.push(Frequency {
-            name: "Unicom".to_string(),
+            id: 0,
+            callsign: "Unicom".to_string(),
             frequency: "122.8".to_string(),
         });
+    }
+
+    for freq in &frequencies {
+        log!(format!(
+            "{} - {} - {}",
+            freq.id,
+            freq.callsign.clone(),
+            freq.frequency.clone()
+        ));
     }
 
     let style_name = format!("width: {};", props.name_width);
@@ -72,8 +69,8 @@ pub fn Frequencies(props: &FrequenciesProps) -> Html {
                 {
                     frequencies.into_iter().map(|freq| {
                         html!{
-                            <tr key={freq.name.clone()} style={line_height.clone()}>
-                                <td>{&freq.name}</td>
+                            <tr key={freq.id} style={line_height.clone()}>
+                                <td>{&freq.callsign}</td>
                                 <td>{&freq.frequency}</td>
                             </tr>
                         }

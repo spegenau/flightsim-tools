@@ -6,6 +6,7 @@ use crate::simbrief::simbrief_response::SimbriefResponse;
 #[derive(Properties, PartialEq)]
 pub struct HeaderProps {
     pub on_simbrief_update: Callback<SimbriefResponse>,
+    pub on_error: Callback<Vec<String>>,
 }
 
 #[function_component]
@@ -17,7 +18,7 @@ pub fn Header(props: &HeaderProps) -> Html {
                     <span class={classes!("fs-4")}>{"Flight Simulation Tools"}</span>
                 </a>
                 <div class={classes!("me-md-auto")}>
-                    <SimbriefLoader on_simbrief_update={props.on_simbrief_update.clone()}/>
+                    <SimbriefLoader on_simbrief_update={props.on_simbrief_update.clone()} on_error={props.on_error.clone()}/>
                 </div>
 
                 <ul class={classes!("nav", "nav-pills")}>

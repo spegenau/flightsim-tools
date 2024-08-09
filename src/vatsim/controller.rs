@@ -1,5 +1,5 @@
 use serde::Deserialize;
-#[derive(Clone, PartialEq, Deserialize, Default, Debug)]
+#[derive(Clone, PartialEq, Deserialize, Debug, Default)]
 pub struct Controller {
     pub cid: u32,
     pub name: String,
