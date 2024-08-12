@@ -16,17 +16,17 @@ pub fn Cheatsheet() -> Html {
                 <Section label="Clearance" height={"3.2cm".to_string()}>
                         <Clearance/>
                 </Section>
-                <Section label="Taxi" height={"3.9cm".to_string()}>
+                <Section label="Taxi" height={"3.3cm".to_string()}>
                         <Taxi />
                 </Section>
-                <Section label="Cruise" height={"7cm".to_string()}>
+                <Section label="Cruise" height={"7.2cm".to_string()}>
                         <Cruise  />
-                </Section>
-                <Section label="Routing" height={"2cm".to_string()}>
-                        <Route  />
                 </Section>
                 <Section label="Approach & Taxi" height={"4.8cm".to_string()}>
                         <ApproachTaxi/>
+                </Section>
+                <Section label="Routing" height={"2cm".to_string()}>
+                        <Route  />
                 </Section>
         </div>
     }

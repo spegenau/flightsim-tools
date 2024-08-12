@@ -8,6 +8,7 @@ use crate::{
     vatsim::{
         transceiver::Transceiver,
         vatsim_data_manager::{ControllerLine, ControllerType, VatsimDataManager},
+        vatsim_response::VatsimResponse,
     },
 };
 use infobox::Infobox;
@@ -18,10 +19,15 @@ use super::infobox;
 #[function_component]
 pub fn ApproachTaxi() -> Html {
     let simbrief = use_context::<SimbriefResponse>().expect("no ctx found");
+    let vatsim = use_context::<VatsimResponse>().expect("no ctx found");
     let transceivers = use_context::<Vec<Transceiver>>().expect("no ctx found");
 
     let runway: String = simbrief.api_params.destrwy.clone();
     let destination = simbrief.destination.icao_code.as_str();
+
+    let atis = vatsim
+        .get_atis_for_callsign(format!("{destination}_ATIS").as_str())
+        .unwrap_or_default();
 
     let vatsim_data_manager = VatsimDataManager { transceivers };
 
@@ -74,10 +80,11 @@ pub fn ApproachTaxi() -> Html {
     let min_height = "1.5cm".to_string();
 
     let entries = vec![
+        FlexiboxEntry::label_and_proposition("Atis Info", atis.information_letter.as_str()),
         FlexiboxEntry::label_only("TL"),
         FlexiboxEntry::label_only("Wind"),
-        FlexiboxEntry::label_only("Temp"),
-        FlexiboxEntry::label_only("QNH"),
+        FlexiboxEntry::label_and_proposition("Temp", atis.temperature.as_str()),
+        FlexiboxEntry::label_and_proposition("QNH", atis.altimeter_settings.as_str()),
     ];
 
     html! {
@@ -93,10 +100,16 @@ pub fn ApproachTaxi() -> Html {
                 </div>
 
 
-                <div class={classes!("col-6", "ml-1")}>
-                    <Infobox label={"Awaited"} size_left={size_left.clone()} size_right={size_right.clone()} min_height={min_height.clone()} dense={true}  />
-                    <Infobox class={classes!("mt-2")} label={"Confirmed"} size_left={size_left.clone()} size_right={size_right.clone()} min_height={min_height.clone()} dense={true} />
-                    <Flexibox {entries} />
+                <div class={classes!("col-6", "ml-1", "paddingRightZero")}>
+                    <div class={classes!("row")}>
+                        <Infobox class={classes!("paddingRightZero")} label={"Awaited"} size_left={size_left.clone()} size_right={size_right.clone()} min_height={min_height.clone()} dense={true}  />
+                    </div>
+                    <div class={classes!("row")}>
+                        <Infobox class={classes!("mt-2", "paddingRightZero")} label={"Confirmed"} size_left={size_left.clone()} size_right={size_right.clone()} min_height={min_height.clone()} dense={true} />
+                    </div>
+                    <div class={classes!("row")}>
+                        <Flexibox {entries} class={classes!("paddingLeftZero")}/>
+                    </div>
                 </div>
             </div>
         </div>

@@ -36,18 +36,8 @@ pub fn Taxi() -> Html {
             .join(", "),
     };
 
-    let tower = Frequency {
-        id: 1,
-        callsign: "Tower".to_string(),
-        frequency: stations_for_airport
-            .get(&ControllerType::Tower)
-            .unwrap_or(&ControllerLine::default())
-            .frequencies
-            .join(", "),
-    };
-
     let ground = Frequency {
-        id: 2,
+        id: 1,
         callsign: "Ground".to_string(),
         frequency: stations_for_airport
             .get(&ControllerType::Ground)
@@ -56,7 +46,17 @@ pub fn Taxi() -> Html {
             .join(", "),
     };
 
-    let frequencies: Vec<Frequency> = vec![tower, ground, approach];
+    let tower = Frequency {
+        id: 2,
+        callsign: "Tower".to_string(),
+        frequency: stations_for_airport
+            .get(&ControllerType::Tower)
+            .unwrap_or(&ControllerLine::default())
+            .frequencies
+            .join(", "),
+    };
+
+    let frequencies: Vec<Frequency> = vec![ground, tower, approach];
 
     let size_left = "col-3".to_string();
     let size_right = "col-9".to_string();

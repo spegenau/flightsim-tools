@@ -8,6 +8,7 @@ use crate::{
 };
 
 use super::frequencies::Frequency;
+use itertools::Itertools;
 
 #[function_component]
 pub fn Cruise() -> Html {
@@ -45,6 +46,7 @@ pub fn Cruise() -> Html {
 
     let frequencies: Vec<Frequency> = callsigns
         .iter()
+        .unique()
         .map(|c| {
             let mut split = c.split("#####");
             let callsign = split.next().unwrap().to_string();

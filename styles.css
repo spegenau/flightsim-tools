@@ -51,7 +51,6 @@
 }
 
 .box {
-    outline: 1px solid lightgrey;
     position: relative;
 }
 
@@ -83,4 +82,17 @@
 
 .bordered {
     border: 1px solid lightgrey;
+}
+
+.routeTable {
+    font-size: 7pt;
+}
+
+
+.paddingRightZero {
+    padding-right: 0 !important;
+}
+
+.paddingLeftZero {
+    padding-left: 0 !important;
 }

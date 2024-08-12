@@ -1,16 +1,11 @@
 use std::collections::HashMap;
 
-use geo::{coord, Coord};
-use gloo_console::log;
-
-use crate::simbrief::fix_info_point::FixInfoPoint;
-
 use super::transceiver::Transceiver;
 #[derive(PartialEq, Hash, Eq)]
 pub enum ControllerType {
     Approach,
     // Atis,
-    Control,
+    //Control,
     Delivery,
     Ground,
     // Observer,
@@ -24,7 +19,7 @@ impl ControllerType {
         match self {
             ControllerType::Approach => "APP",
             // ControllerType::Atis => "ATIS",
-            ControllerType::Control => "CTR",
+            //ControllerType::Control => "CTR",
             ControllerType::Delivery => "DEL",
             ControllerType::Ground => "GND",
             // ControllerType::Observer => "OBS",
@@ -72,37 +67,6 @@ impl VatsimDataManager {
             .into_iter()
             .filter(|t| t.callsign.contains('_'))
             .collect()
-    }
-
-    pub fn get_center_stations(&self, routing: Vec<FixInfoPoint>) -> Vec<ControllerLine> {
-        let controllers: Vec<Transceiver> = self
-            .get_controllers()
-            .into_iter()
-            .filter(|t| t.callsign.ends_with("_CTR"))
-            .collect();
-        log!("Controllers", controllers.len());
-
-        let mut centers = Vec::new();
-
-        for point in routing {
-            let coordinate: Coord<f64> =
-                coord! { x: point.pos_lat.parse().unwrap(), y: point.pos_long.parse().unwrap() };
-
-            for controller in controllers.clone() {
-                if controller.contains_coord(&coordinate) {
-                    log!("Found center station: {}", controller.callsign.clone());
-                    let freq = controller.transceivers.first().unwrap().frequency;
-                    let frequencies = vec![VatsimDataManager::frequency_to_string(freq)];
-                    centers.push(ControllerLine {
-                        callsign: controller.callsign,
-                        controller_type: ControllerType::Control,
-                        frequencies,
-                    });
-                }
-            }
-        }
-
-        centers
     }
 
     pub fn get_stations_for_airport(

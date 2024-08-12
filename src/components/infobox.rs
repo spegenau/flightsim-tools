@@ -46,7 +46,7 @@ pub fn Infobox(props: &InfoboxProps) -> Html {
         Alignment::Horizontal => {
             let class = classes!("row", "infobox", props.class.clone());
 
-            let mut base_classes = classes!("box");
+            let mut base_classes = classes!("box", "bordered");
             if props.dense {
                 base_classes.push("p-0");
             }
@@ -73,10 +73,10 @@ pub fn Infobox(props: &InfoboxProps) -> Html {
             let class = classes!("infobox", props.class.clone());
             html! {
                 <div {class}>
-                    <div class={classes!("box")}>
+                    <div class={classes!("box", "bordered")}>
                         {label.clone()}
                     </div>
-                    <div class={classes!("box", "boxContent")} style={value_line_style}>
+                    <div class={classes!("box", "boxContent", "bordered")} style={value_line_style}>
                         {props.children.clone()}
                         <span class={classes!("proposition")}>{proposition}</span>
                     </div>

@@ -32,7 +32,7 @@ pub fn Route() -> Html {
     let route_star = points_to_route(points_star);
 
     html! {
-        <table class={classes!("table", "table-striped", "table-bordered", "table-sm")}>
+        <table class={classes!("table", "table-striped", "table-bordered", "table-sm", "routeTable")}>
             <thead>
                 <tr>
                     <th>{"SID"}</th>

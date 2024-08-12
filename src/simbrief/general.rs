@@ -32,8 +32,7 @@ impl General {
     pub fn get_star(&self) -> String {
         self.route
             .split(' ')
-            .rev()
-            .next()
+            .next_back()
             .unwrap_or_default()
             .to_string()
     }

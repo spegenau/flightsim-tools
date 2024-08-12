@@ -30,3 +30,5 @@ gloo = "0.11.0"
 gloo-storage = "0.3.0"
 geo = { version = "0.28.0", features = [ "use-serde"] }
 gloo-console = "0.3.0"
+regex = "1.10.6"
+itertools = "0.13.0"
