@@ -5,6 +5,8 @@ pub struct Airport {
     pub icao_code: String,
     pub name: String,
     pub plan_rwy: String,
+    pub pos_lat: String,
+    pub pos_long: String,
 }
 
 impl Airport {

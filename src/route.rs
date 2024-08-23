@@ -2,6 +2,7 @@ use yew::{html, Html};
 use yew_router::prelude::*;
 
 use crate::pages::about::About;
+use crate::pages::atis_page::AtisPage;
 use crate::pages::controllers_online::ControllersOnline;
 use crate::pages::not_found::NotFound;
 use crate::pages::vatsim_sheet::VatsimSheet;
@@ -10,6 +11,8 @@ use crate::pages::vatsim_sheet::VatsimSheet;
 pub enum Route {
     #[at("/")]
     Home,
+    #[at("/atis")]
+    Atis,
     #[at("/vatsim-sheet")]
     VatsimSheet,
     #[at("/controllers-online")]
@@ -24,6 +27,7 @@ pub enum Route {
 pub fn switch_route(route: Route) -> Html {
     match route {
         Route::Home => html! { <VatsimSheet /> },
+        Route::Atis => html! { <AtisPage /> },
         Route::VatsimSheet => html! { <VatsimSheet /> },
         Route::About => html! { <About /> },
         Route::ControllersOnline => html! {

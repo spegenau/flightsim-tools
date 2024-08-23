@@ -1,6 +1,4 @@
 use std::cmp::max;
-
-use gloo_console::log;
 use yew::{classes, function_component, html, Html, Properties};
 
 #[derive(PartialEq, Default, Clone)]
@@ -42,15 +40,6 @@ pub fn Frequencies(props: &FrequenciesProps) -> Html {
             callsign: "Unicom".to_string(),
             frequency: "122.8".to_string(),
         });
-    }
-
-    for freq in &frequencies {
-        log!(format!(
-            "{} - {} - {}",
-            freq.id,
-            freq.callsign.clone(),
-            freq.frequency.clone()
-        ));
     }
 
     let style_name = format!("width: {};", props.name_width);

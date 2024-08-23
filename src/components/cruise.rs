@@ -4,7 +4,7 @@ use yew::{classes, function_component, html, use_context, Html};
 use crate::{
     components::{frequencies::Frequencies, instructions::Instructions},
     simbrief::simbrief_response::SimbriefResponse,
-    vatsim::{transceiver::Transceiver, vatsim_response::VatsimResponse},
+    vatsim::transceiver::Transceiver,
 };
 
 use super::frequencies::Frequency;
@@ -14,7 +14,6 @@ use itertools::Itertools;
 pub fn Cruise() -> Html {
     let simbrief = use_context::<SimbriefResponse>().expect("no ctx found");
     let transceivers = use_context::<Vec<Transceiver>>().expect("no ctx found");
-    let vatsim = use_context::<VatsimResponse>().expect("no ctx found");
 
     let transceivers: Vec<Transceiver> = transceivers.clone();
 
@@ -59,12 +58,6 @@ pub fn Cruise() -> Html {
             }
         })
         .collect();
-
-    let controllers = vatsim.get_all_controllers_as_map();
-    let mut keys: Vec<String> = controllers.keys().map(String::from).collect();
-
-    keys.sort();
-    log!(format!("Found controllers {:#?}", keys));
 
     log!(format!("Found frequencies {:#?}", frequencies.len()));
 

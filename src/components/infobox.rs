@@ -76,7 +76,7 @@ pub fn Infobox(props: &InfoboxProps) -> Html {
                     <div class={classes!("box", "bordered")}>
                         {label.clone()}
                     </div>
-                    <div class={classes!("box", "boxContent", "bordered")} style={value_line_style}>
+                    <div class={classes!("box", "bordered")} style={value_line_style}>
                         {props.children.clone()}
                         <span class={classes!("proposition")}>{proposition}</span>
                     </div>

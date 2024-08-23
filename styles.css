@@ -54,10 +54,6 @@
     position: relative;
 }
 
-.boxContent {
-    font-weight: bold;
-}
-
 .boldBorderRight {
     border-right: 3px solid black;
 }
@@ -95,4 +91,8 @@
 
 .paddingLeftZero {
     padding-left: 0 !important;
+}
+
+.font-weight-bold {
+    font-weight: bold;
 }

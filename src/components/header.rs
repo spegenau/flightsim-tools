@@ -23,6 +23,7 @@ pub fn Header(props: &HeaderProps) -> Html {
 
                 <ul class={classes!("nav", "nav-pills")}>
                     <li class={classes!("nav-item")}><a href="/home" class={classes!("nav-link", "active")} aria-current="page">{"Home"}</a></li>
+                    <li class={classes!("nav-item")}><a href="/atis" class={classes!("nav-link")} aria-current="page">{"ATIS"}</a></li>
                     <li class={classes!("nav-item")}><a href="/vatsim-sheet" class={classes!("nav-link")}>{"Vatsim Sheet"}</a></li>
                     <li class={classes!("nav-item")}><a href="/controllers-online" class={classes!("nav-link")}>{"Controllers Online"}</a></li>
                     <li class={classes!("nav-item")}><a href="/about" class={classes!("nav-link")}>{"About"}</a></li>

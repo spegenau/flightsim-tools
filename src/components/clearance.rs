@@ -20,7 +20,7 @@ pub fn Clearance() -> Html {
 
     let origin = simbrief.origin.icao_code.as_str();
     let atis = vatsim
-        .get_atis_for_callsign(format!("{origin}_ATIS").as_str())
+        .get_atis_for_airport(origin, crate::vatsim::vatsim_response::AtisType::Departure)
         .unwrap_or_default();
 
     let general: General = simbrief.general.clone();

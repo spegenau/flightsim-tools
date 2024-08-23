@@ -54,6 +54,14 @@ impl ControllerLine {
             frequencies: Vec::new(),
         }
     }
+
+    pub fn format_frequencies(&self) -> String {
+        let mut frequencies = self.frequencies.clone();
+        frequencies.sort();
+        frequencies.dedup();
+
+        frequencies.join(", ")
+    }
 }
 
 pub struct VatsimDataManager {
@@ -110,6 +118,7 @@ impl VatsimDataManager {
                                     transceiver.frequency,
                                 ));
                         }
+                        line.frequencies.sort();
                         line.frequencies.dedup();
                     }
                 }

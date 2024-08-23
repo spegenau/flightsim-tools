@@ -8,6 +8,8 @@ pub struct General {
     pub icao_airline: StringOrMap,
     pub flight_number: StringOrMap,
     pub route: String,
+    pub costindex: String,
+    pub climb_profile: String,
 }
 
 impl General {
@@ -35,5 +37,19 @@ impl General {
             .next_back()
             .unwrap_or_default()
             .to_string()
+    }
+
+    pub fn get_flight_level(&self) -> String {
+        let level = self
+            .climb_profile
+            .split('/')
+            .map(|lvl| lvl.parse::<i32>().unwrap_or(0))
+            .max()
+            .unwrap_or(0);
+        if level == 0 {
+            String::new()
+        } else {
+            level.to_string()
+        }
     }
 }

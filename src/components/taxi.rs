@@ -28,12 +28,11 @@ pub fn Taxi() -> Html {
 
     let approach = Frequency {
         id: 0,
-        callsign: "Approach".to_string(),
+        callsign: "Departure".to_string(),
         frequency: stations_for_airport
             .get(&ControllerType::Approach)
             .unwrap_or(&ControllerLine::default())
-            .frequencies
-            .join(", "),
+            .format_frequencies(),
     };
 
     let ground = Frequency {
@@ -42,8 +41,7 @@ pub fn Taxi() -> Html {
         frequency: stations_for_airport
             .get(&ControllerType::Ground)
             .unwrap_or(&ControllerLine::default())
-            .frequencies
-            .join(", "),
+            .format_frequencies(),
     };
 
     let tower = Frequency {
@@ -52,8 +50,7 @@ pub fn Taxi() -> Html {
         frequency: stations_for_airport
             .get(&ControllerType::Tower)
             .unwrap_or(&ControllerLine::default())
-            .frequencies
-            .join(", "),
+            .format_frequencies(),
     };
 
     let frequencies: Vec<Frequency> = vec![ground, tower, approach];

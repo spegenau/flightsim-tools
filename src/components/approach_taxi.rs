@@ -26,7 +26,10 @@ pub fn ApproachTaxi() -> Html {
     let destination = simbrief.destination.icao_code.as_str();
 
     let atis = vatsim
-        .get_atis_for_callsign(format!("{destination}_ATIS").as_str())
+        .get_atis_for_airport(
+            destination,
+            crate::vatsim::vatsim_response::AtisType::Arrival,
+        )
         .unwrap_or_default();
 
     let vatsim_data_manager = VatsimDataManager { transceivers };
@@ -39,8 +42,7 @@ pub fn ApproachTaxi() -> Html {
         frequency: stations_for_airport
             .get(&ControllerType::Approach)
             .unwrap_or(&ControllerLine::default())
-            .frequencies
-            .join(", "),
+            .format_frequencies(),
     };
 
     let tower = Frequency {
@@ -49,8 +51,7 @@ pub fn ApproachTaxi() -> Html {
         frequency: stations_for_airport
             .get(&ControllerType::Tower)
             .unwrap_or(&ControllerLine::default())
-            .frequencies
-            .join(", "),
+            .format_frequencies(),
     };
 
     let ground = Frequency {
@@ -59,8 +60,7 @@ pub fn ApproachTaxi() -> Html {
         frequency: stations_for_airport
             .get(&ControllerType::Ground)
             .unwrap_or(&ControllerLine::default())
-            .frequencies
-            .join(", "),
+            .format_frequencies(),
     };
 
     let apron = Frequency {
@@ -69,8 +69,7 @@ pub fn ApproachTaxi() -> Html {
         frequency: stations_for_airport
             .get(&ControllerType::Delivery)
             .unwrap_or(&ControllerLine::default())
-            .frequencies
-            .join(", "),
+            .format_frequencies(),
     };
 
     let frequencies: Vec<Frequency> = vec![approach, tower, ground, apron];
@@ -81,8 +80,8 @@ pub fn ApproachTaxi() -> Html {
 
     let entries = vec![
         FlexiboxEntry::label_and_proposition("Atis Info", atis.information_letter.as_str()),
-        FlexiboxEntry::label_only("TL"),
-        FlexiboxEntry::label_only("Wind"),
+        FlexiboxEntry::label_and_proposition("TL", atis.transition_level.as_str()),
+        FlexiboxEntry::label_and_proposition("Wind", atis.format_wind().as_str()),
         FlexiboxEntry::label_and_proposition("Temp", atis.temperature.as_str()),
         FlexiboxEntry::label_and_proposition("QNH", atis.altimeter_settings.as_str()),
     ];

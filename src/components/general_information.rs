@@ -1,9 +1,8 @@
+use super::infobox;
+use crate::simbrief::{airport::Airport, general::General, simbrief_response::SimbriefResponse};
 use infobox::Infobox;
 use yew::{classes, function_component, html, use_context, Html};
-
-use crate::simbrief::{airport::Airport, general::General, simbrief_response::SimbriefResponse};
-
-use super::infobox;
+use yew_bootstrap::component::*;
 
 #[function_component]
 pub fn GeneralInformation() -> Html {
@@ -18,22 +17,31 @@ pub fn GeneralInformation() -> Html {
 
     html! {
         <div class={classes!("container")}>
-            <div class={classes!("row")}>
-                <div class={classes!("col-4")}>
-                    <Infobox label={"Callsign:"} size_left={size_left.clone()} size_right={size_right.clone()} >
-                        {general.get_call_sign()}
-                    </Infobox>
-                </div>
-                <div class={classes!("col-1")} />
-                <div class={classes!("col-7")}>
+            <Row>
+                <Column size=4>
+                    <Row>
+                        <Column>
+                            <Infobox label={"Callsign:"} size_left={size_left.clone()} size_right={size_right.clone()} >
+                                <span class="font-weight-bold" style="display: block;">{general.get_call_sign()}</span>
+                                <span style="display: inline-block;">{format!("LVL: {}", general.get_flight_level())}</span>
+                                <span style="display: inline-block; float: right;">{format!("CI: {}", general.costindex)}</span>
+                            </Infobox>
+                        </Column>
+                    </Row>
+                </Column>
+                <Column size=1 />
+
+                <Column size=7>
                     <Infobox label={"Departure:"} size_left={size_left.clone()} size_right={size_right.clone()} >
-                        {origin.format_name()}
+                        <span class="font-weight-bold">{origin.format_name()}</span>
+                        <span style="display: inline-block; float: right;">{format!("{} / {}", simbrief.times.get_out_time(), simbrief.times.get_offblock_time())}</span>
                     </Infobox>
                     <Infobox class={classes!("mt-1")} label={"Arrival:"} size_left={size_left.clone()} size_right={size_right.clone()}>
-                        {destination.format_name()}
+                        <span class="font-weight-bold">{destination.format_name()}</span>
+                        <span style="display: inline-block; float: right;">{format!("{} / {}", simbrief.times.get_onblock_time(), simbrief.times.get_in_time())}</span>
                     </Infobox>
-                </div>
-            </div>
+                </Column>
+            </Row>
         </div>
     }
 }

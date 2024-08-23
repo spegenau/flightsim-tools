@@ -2,6 +2,7 @@ use serde::Deserialize;
 
 use super::{
     aircraft::Aircraft, airport::Airport, api_params::ApiParams, general::General, navlog::Navlog,
+    times::Times,
 };
 
 pub fn get_simbrief_url(userid: &str) -> String {
@@ -16,4 +17,5 @@ pub struct SimbriefResponse {
     pub aircraft: Aircraft,
     pub navlog: Navlog,
     pub api_params: ApiParams,
+    pub times: Times,
 }
