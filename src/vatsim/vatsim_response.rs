@@ -39,13 +39,6 @@ impl VatsimResponse {
             .collect()
     }
 
-    pub fn get_all_controllers_as_map(&self) -> HashMap<String, Controller> {
-        self.get_all_controllers()
-            .into_iter()
-            .map(|c| (c.callsign.clone(), c.clone()))
-            .collect()
-    }
-
     pub fn get_parsed_atis_list(&self) -> Vec<ParsedAtis> {
         self.atis
             .clone()
@@ -53,17 +46,6 @@ impl VatsimResponse {
             .filter(|a| a.text_atis.is_some())
             .map(ParsedAtis::from)
             .collect()
-    }
-
-    pub fn get_atis_for_callsign(&self, callsign: &str) -> Option<ParsedAtis> {
-        if callsign.is_empty() {
-            return None;
-        }
-        self.get_parsed_atis_list()
-            .clone()
-            .iter()
-            .find(|a| a.callsign == callsign)
-            .cloned()
     }
 
     pub fn get_atis_for_airport(&self, airport: &str, atis_type: AtisType) -> Option<ParsedAtis> {

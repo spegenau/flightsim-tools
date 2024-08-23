@@ -25,14 +25,6 @@ impl FlexiboxEntry {
             proposition: proposition.to_string(),
         }
     }
-
-    pub fn label_and_value(label: &str, value: &str) -> Self {
-        FlexiboxEntry {
-            label: label.to_string(),
-            value: value.to_string(),
-            proposition: "".to_string(),
-        }
-    }
 }
 
 #[derive(Properties, PartialEq)]
